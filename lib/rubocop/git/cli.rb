@@ -1,4 +1,4 @@
-require 'rubocop/git'
+require_relative '../git'
 require 'optparse'
 
 module RuboCop

@@ -19,10 +19,8 @@ class StyleGuide
 
   private
 
-  if Gem::Version.new(RuboCop::Version::STRING) >= Gem::Version.new('0.47.0')
-    def all_cops; RuboCop::Cop::Registry.new RuboCop::Cop::Cop.all; end
-  else
-    def all_cops; RuboCop::Cop::Cop.all; end
+  def all_cops
+    RuboCop::Cop::Registry.new(RuboCop::Cop::Cop.all)
   end
 
   def ignored_file?(file)
@@ -34,16 +32,8 @@ class StyleGuide
   end
 
   def parse_source(file)
-    rubocop_version = Gem::Version.new(RuboCop::Version::STRING)
-    if rubocop_version < Gem::Version.new('0.36.0')
-      RuboCop::ProcessedSource.new(file.content, file.absolute_path)
-    elsif rubocop_version < Gem::Version.new('0.41.0')
-      RuboCop::ProcessedSource.new(file.content,
-                                   target_ruby_version, file.absolute_path)
-    else
-      RuboCop::ProcessedSource.new(file.content,
-                                   config.target_ruby_version, file.absolute_path)
-    end
+    RuboCop::ProcessedSource.new(file.content,
+                                 config.target_ruby_version, file.absolute_path)
   end
 
   def config
@@ -73,25 +63,6 @@ class StyleGuide
       override_config
     else
       {}
-    end
-  end
-
-  # TODO: DELETE ME when we drop support for 0.x releases of rubocop
-  #
-  # This method exists in RuboCop::Config now (or config in this class) so we
-  # should make use of that.
-  def target_ruby_version
-    @target ||= begin
-      target = config['AllCops'] && config['AllCops']['TargetRubyVersion']
-
-      if !target || !RuboCop::Config::KNOWN_RUBIES.include?(target)
-        fail ValidationError, "Unknown Ruby version #{target.inspect} found " \
-          'in `TargetRubyVersion` parameter (in ' \
-          "#{loaded_path}).\nKnown versions: " \
-          "#{RuboCop::Config::KNOWN_RUBIES.join(', ')}"
-      end
-
-      target
     end
   end
 end

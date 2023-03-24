@@ -1,19 +1,17 @@
-require 'rubocop/git/version'
+require_relative 'git/version'
 require 'rubocop'
 
-module RuboCop
-  module Git
-    autoload :Commit,            'rubocop/git/commit'
-    autoload :CommitFile,        'rubocop/git/commit_file'
-    autoload :DiffParser,        'rubocop/git/diff_parser'
-    autoload :FileViolation,     'rubocop/git/file_violation'
-    autoload :Line,              'rubocop/git/line'
-    autoload :Options,           'rubocop/git/options'
-    autoload :Patch,             'rubocop/git/patch'
-    autoload :PseudoPullRequest, 'rubocop/git/pseudo_pull_request'
-    autoload :PseudoResource,    'rubocop/git/pseudo_resource'
-    autoload :Runner,            'rubocop/git/runner'
-    autoload :StyleChecker,      'rubocop/git/style_checker'
-    autoload :StyleGuide,        'rubocop/git/style_guide'
-  end
+module RuboCop::Git
+  autoload :Commit,            "#{__dir__}/git/commit"
+  autoload :CommitFile,        "#{__dir__}/git/commit_file"
+  autoload :DiffParser,        "#{__dir__}/git/diff_parser"
+  autoload :FileViolation,     "#{__dir__}/git/file_violation"
+  autoload :Line,              "#{__dir__}/git/line"
+  autoload :Options,           "#{__dir__}/git/options"
+  autoload :Patch,             "#{__dir__}/git/patch"
+  autoload :PseudoPullRequest, "#{__dir__}/git/pseudo_pull_request"
+  autoload :PseudoResource,    "#{__dir__}/git/pseudo_resource"
+  autoload :Runner,            "#{__dir__}/git/runner"
+  autoload :StyleChecker,      "#{__dir__}/git/style_checker"
+  autoload :StyleGuide,        "#{__dir__}/git/style_guide"
 end
