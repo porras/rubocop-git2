@@ -30,10 +30,6 @@ class CommitFile
     @file.status == 'removed'
   end
 
-  def ruby?
-    filename.match(/.*\.rb$/)
-  end
-
   def modified_lines
     @modified_lines ||= patch.changed_lines
   end

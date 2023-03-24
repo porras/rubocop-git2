@@ -1,0 +1,3 @@
+# should be ignored because filename doesn't match default includes
+
+MY_CONST = "haha, mutable!"

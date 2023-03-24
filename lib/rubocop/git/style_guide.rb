@@ -38,7 +38,11 @@ class StyleGuide
   end
 
   def ignored_file?(file)
-    !file.ruby? || file.removed? || excluded_file?(file)
+    !included_file?(file) || file.removed? || excluded_file?(file)
+  end
+
+  def included_file?(file)
+    config.file_to_include?(file.absolute_path)
   end
 
   def excluded_file?(file)

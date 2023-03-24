@@ -2,6 +2,8 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 2.6 # really 2.4, but 2.6 is lowest supported by rubocop
 
+Gemspec/RequiredRubyVersion:
+  Enabled: false
 Layout/DotPosition:
   Enabled: false
 Metrics/BlockLength:
