@@ -3,7 +3,7 @@ require 'rubocop/git/options'
 
 describe RuboCop::Git::Options do
   it 'fail with no options' do
-    proc do
+    _ do
       RuboCop::Git::Options.new({})
     end.must_raise(RuboCop::Git::Options::Invalid)
   end

@@ -1,10 +1,11 @@
 **NOTE: this is a drop-in replacement for the unmaintained https://github.com/m4i/rubocop-git**
 
+[![Gem Version](https://badge.fury.io/rb/rubocop-git2.svg)](http://badge.fury.io/rb/rubocop-git2)
+[![Build Status](https://github.com/jaynetics/rubocop-git2/workflows/tests/badge.svg)](https://github.com/jaynetics/rubocop-git2/actions)
+
 # RuboCop::Git
 
 RuboCop for git diff.
-
-[![Gem Version](https://badge.fury.io/rb/rubocop-git2.svg)](http://badge.fury.io/rb/rubocop-git2)
 
 ## Installation
 

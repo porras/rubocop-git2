@@ -6,7 +6,7 @@ describe RuboCop::Git::Runner do
     options = RuboCop::Git::Options.new
     # lib/rubocop/git/runner.rb:14:1: C: Trailing whitespace detected.
     options.commits = ["v0.0.4", "v0.0.5"]
-    proc do
+    _ do
       _out, _err = capture_io do
         RuboCop::Git::Runner.new.run(options)
       end
@@ -14,7 +14,7 @@ describe RuboCop::Git::Runner do
   end
 
   it 'fail with no options' do
-    proc do
+    _ do
       _out, _err = capture_io do
         RuboCop::Git::Runner.new.run({})
       end
