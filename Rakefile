@@ -1,6 +1,5 @@
 require 'bundler/gem_tasks'
 require 'rake/testtask'
-require 'appraisal'
 
 Rake::TestTask.new(:test) do |t|
   t.libs << 'test'
@@ -8,8 +7,4 @@ Rake::TestTask.new(:test) do |t|
   t.test_files = FileList['test/**/*_test.rb']
 end
 
-if ENV['APPRAISAL_INITIALIZED'] || ENV['TRAVIS']
-  task default: :test
-else
-  task default: :appraisal
-end
+task default: :test

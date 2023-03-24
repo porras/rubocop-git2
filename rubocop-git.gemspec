@@ -1,16 +1,13 @@
-# coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'rubocop/git/version'
+require File.join(File.expand_path(__dir__), 'lib', 'rubocop', 'git', 'version')
 
 Gem::Specification.new do |spec|
-  spec.name          = 'rubocop-git'
+  spec.name          = 'rubocop-git2'
   spec.version       = RuboCop::Git::VERSION
-  spec.authors       = ['Masaki Takeuchi']
-  spec.email         = ['m.ishihara@gmail.com']
+  spec.authors       = ['Masaki Takeuchi', 'Janosch Müller']
+  spec.email         = ['janosch84@gmail.com']
   spec.summary       = %q{RuboCop for git diff.}
   spec.description   = %q{RuboCop for git diff.}
-  spec.homepage      = 'https://github.com/m4i/rubocop-git'
+  spec.homepage      = 'https://github.com/jaynetics/rubocop-git2'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -18,10 +15,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'bundler', '~> 1.6'
-  spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'minitest'
-  spec.add_development_dependency 'appraisal'
+  spec.required_ruby_version = '>= 2.4.1'
 
-  spec.add_dependency 'rubocop', '>= 0.24.1'
+  spec.add_dependency 'rubocop', '~> 1.0'
 end
