@@ -31,10 +31,10 @@ module RuboCop
       end
 
       def rubocop=(rubocop_)
-        unless rubocop_.is_a?(Hash)
+        unless rubocop_.nil? || rubocop_.is_a?(Hash)
           fail Invalid, "invalid rubocop: #{rubocop_.inspect}"
         end
-        @rubocop = rubocop_
+        @rubocop = rubocop_.to_h
       end
 
       def commits=(commits)

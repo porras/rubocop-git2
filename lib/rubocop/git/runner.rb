@@ -4,7 +4,11 @@ module RuboCop
   module Git
     # ref. https://github.com/thoughtbot/hound/blob/d2f3933/app/services/build_runner.rb
     class Runner
-      def run(options)
+      def initialize(exit_on_offence: true)
+        @exit_on_offence = exit_on_offence
+      end
+
+      def run(options = {})
         options = Options.new(options) unless options.is_a?(Options)
 
         @options = options
@@ -12,7 +16,9 @@ module RuboCop
 
         display_violations($stdout)
 
-        exit(1) if violations_with_valid_offences.any?
+        ok = violations_with_valid_offences.none?
+        exit(1) if @exit_on_offence && !ok
+        ok
       end
 
       private
@@ -22,13 +28,13 @@ module RuboCop
       end
 
       def violations_with_valid_offences
-        @violations_with_valid_offences ||= begin
-          violations.map do |violation|
-            offenses = violation.offenses
-            offenses = offenses.reject(&:disabled?) if offenses.first.respond_to?(:disabled?)
-            offenses.any? ? violation : nil
-          end.compact
-        end
+        @violations_with_valid_offences ||= violations.select { |v| valid_offences(v).any? }
+      end
+
+      def valid_offences(violation)
+        offenses = violation.offenses
+        offenses = offenses.reject(&:disabled?) if offenses.first.respond_to?(:disabled?)
+        offenses.compact.sort.freeze
       end
 
       def style_checker
@@ -59,12 +65,7 @@ module RuboCop
         formatter.started(nil)
 
         violations.map do |violation|
-          offenses = violation.offenses
-          offenses = offenses.reject(&:disabled?) if offenses.first.respond_to?(:disabled?)
-          formatter.file_finished(
-            violation.filename,
-            offenses.compact.sort.freeze
-          )
+          formatter.file_finished(violation.filename, valid_offences(violation))
         end
 
         formatter.finished(@files.map(&:filename).freeze)

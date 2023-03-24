@@ -9,11 +9,11 @@ class Patch
     @body = body || ''
   end
 
-  def changed_lines
+  def changed_lines # rubocop:disable Metrics/MethodLength
     line_number = 0
     lines.
       each_with_object({}).
-      each_with_index do |(content, hash), patch_position|
+      with_index do |(content, hash), patch_position|
       case content
       when RANGE_INFORMATION_LINE
         line_number = Regexp.last_match[:line_number].to_i

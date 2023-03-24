@@ -12,15 +12,29 @@ class StyleGuide
       []
     else
       parsed_source = parse_source(file)
-      team = RuboCop::Cop::Team.new(all_cops, config, rubocop_options)
+      team = RuboCop::Cop::Team.new(enabled_cops, config, rubocop_options)
       team.inspect_file(parsed_source)
     end
   end
 
+  def inspect
+    "#<#{self.class.name}>"
+  end
+
   private
 
-  def all_cops
-    RuboCop::Cop::Registry.new(RuboCop::Cop::Cop.all)
+  def enabled_cops
+    registry.enabled(config)
+  end
+
+  def registry
+    @registry ||= begin
+      cops = RuboCop::Cop::Registry.all
+      if (only = rubocop_options[:only])
+        cops = cops.select { |c| c.match?(only) }
+      end
+      RuboCop::Cop::Registry.new(cops, rubocop_options)
+    end
   end
 
   def ignored_file?(file)
@@ -32,18 +46,22 @@ class StyleGuide
   end
 
   def parse_source(file)
-    RuboCop::ProcessedSource.new(file.content,
-                                 config.target_ruby_version, file.absolute_path)
+    source = RuboCop::ProcessedSource.new(
+      file.content,
+      config.target_ruby_version,
+      file.absolute_path
+    )
+    source.config = config
+    source.registry = registry
+    source
   end
 
   def config
-    if @config.nil?
+    @config ||= begin
       config = RuboCop::ConfigLoader.configuration_from_file(@config_file)
       combined_config = RuboCop::ConfigLoader.merge(config, override_config)
-      @config = RuboCop::Config.new(combined_config, "")
+      RuboCop::Config.new(combined_config, "")
     end
-
-    @config
   end
 
   def rubocop_options

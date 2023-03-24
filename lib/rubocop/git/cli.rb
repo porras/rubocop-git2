@@ -44,6 +44,10 @@ module RuboCop
             @options.rubocop[:display_cop_names] = true
           end
 
+          opt.on('--only COP1,COP2', Array) do |args|
+            @options.rubocop[:only] = args
+          end
+
           opt.on('--cached', 'git diff --cached') do
             @options.cached = true
           end
