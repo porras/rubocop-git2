@@ -17,6 +17,7 @@ Add or install `rubocop-git2`.
         -c, --config FILE                Specify configuration file
         -r, --require FILE               Require Ruby file
         -d, --debug                      Display debug info
+        -f, --format                     Set output format, see rubocop --help
         -D, --display-cop-names          Display cop names in offense messages
             --only COP1,COP2             Run only specific cops or departments
             --cached                     git diff --cached
