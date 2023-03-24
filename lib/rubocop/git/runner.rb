@@ -61,8 +61,8 @@ module RuboCop
       end
 
       def display_violations(io)
-        formatter = RuboCop::Formatter::ClangStyleFormatter.new(io)
-        formatter.started(nil)
+        formatter = @options.format.new(io)
+        formatter.started(@files)
 
         violations.map do |violation|
           formatter.file_finished(violation.filename, valid_offences(violation))
