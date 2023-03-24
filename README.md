@@ -9,7 +9,7 @@ RuboCop for git diff.
 
 ## Installation
 
-Add or install `rubocop-git2`. NOT YET RELEASED - will happen soon!
+Add or install `rubocop-git2`.
 
 ## Usage
 
