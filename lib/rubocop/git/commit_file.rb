@@ -1,5 +1,5 @@
 module RuboCop::Git
-# copy from https://github.com/thoughtbot/hound/blob/d2f3933/app/models/commit_file.rb
+# c.f. https://github.com/thoughtbot/hound/blob/d2f3933/app/models/commit_file.rb
 class CommitFile
   def initialize(file, commit)
     @file = file
@@ -23,9 +23,7 @@ class CommitFile
   end
 
   def relevant_line?(line_number)
-    modified_lines.detect do |modified_line|
-      modified_line.line_number == line_number
-    end
+    !modified_line_at(line_number).nil?
   end
 
   def removed?
@@ -37,13 +35,11 @@ class CommitFile
   end
 
   def modified_lines
-    @modified_lines ||= patch.additions
+    @modified_lines ||= patch.changed_lines
   end
 
   def modified_line_at(line_number)
-    modified_lines.detect do |modified_line|
-      modified_line.line_number == line_number
-    end
+    modified_lines[line_number]
   end
 
   private
