@@ -1,5 +1,5 @@
 module RuboCop::Git
-# copy from https://github.com/thoughtbot/hound/blob/d2f3933/app/models/patch.rb
+# copy from https://github.com/thoughtbot/hound/blob/5269fa5/app/models/patch.rb
 class Patch
   RANGE_INFORMATION_LINE = /^@@ .+\+(?<line_number>\d+),/
   MODIFIED_LINE = /^\+(?!\+|\+)/
@@ -9,28 +9,28 @@ class Patch
     @body = body || ''
   end
 
-  def additions
+  def changed_lines # rubocop:disable Metrics/MethodLength
     line_number = 0
-
-    lines.each_with_index.inject([]) do |additions, (content, patch_position)|
+    lines.
+      each_with_object({}).
+      with_index do |(content, hash), patch_position|
       case content
       when RANGE_INFORMATION_LINE
         line_number = Regexp.last_match[:line_number].to_i
       when MODIFIED_LINE
-        additions << Line.new(content, line_number, patch_position)
+        line = Line.new(content, line_number, patch_position)
+        hash[line_number] = line
         line_number += 1
       when NOT_REMOVED_LINE
         line_number += 1
       end
-
-      additions
     end
   end
 
   private
 
   def lines
-    @body.lines
+    @body.each_line
   end
 end
 end

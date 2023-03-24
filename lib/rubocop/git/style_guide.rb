@@ -12,21 +12,37 @@ class StyleGuide
       []
     else
       parsed_source = parse_source(file)
-      team = RuboCop::Cop::Team.new(all_cops, config, rubocop_options)
+      team = RuboCop::Cop::Team.new(enabled_cops, config, rubocop_options)
       team.inspect_file(parsed_source)
     end
   end
 
+  def inspect
+    "#<#{self.class.name}>"
+  end
+
   private
 
-  if Gem::Version.new(RuboCop::Version::STRING) >= Gem::Version.new('0.47.0')
-    def all_cops; RuboCop::Cop::Registry.new RuboCop::Cop::Cop.all; end
-  else
-    def all_cops; RuboCop::Cop::Cop.all; end
+  def enabled_cops
+    registry.enabled(config)
+  end
+
+  def registry
+    @registry ||= begin
+      cops = RuboCop::Cop::Registry.all
+      if (only = rubocop_options[:only])
+        cops = cops.select { |c| c.match?(only) }
+      end
+      RuboCop::Cop::Registry.new(cops, rubocop_options)
+    end
   end
 
   def ignored_file?(file)
-    !file.ruby? || file.removed? || excluded_file?(file)
+    !included_file?(file) || file.removed? || excluded_file?(file)
+  end
+
+  def included_file?(file)
+    config.file_to_include?(file.absolute_path)
   end
 
   def excluded_file?(file)
@@ -34,26 +50,22 @@ class StyleGuide
   end
 
   def parse_source(file)
-    rubocop_version = Gem::Version.new(RuboCop::Version::STRING)
-    if rubocop_version < Gem::Version.new('0.36.0')
-      RuboCop::ProcessedSource.new(file.content, file.absolute_path)
-    elsif rubocop_version < Gem::Version.new('0.41.0')
-      RuboCop::ProcessedSource.new(file.content,
-                                   target_ruby_version, file.absolute_path)
-    else
-      RuboCop::ProcessedSource.new(file.content,
-                                   config.target_ruby_version, file.absolute_path)
-    end
+    source = RuboCop::ProcessedSource.new(
+      file.content,
+      config.target_ruby_version,
+      file.absolute_path
+    )
+    source.config = config
+    source.registry = registry
+    source
   end
 
   def config
-    if @config.nil?
+    @config ||= begin
       config = RuboCop::ConfigLoader.configuration_from_file(@config_file)
       combined_config = RuboCop::ConfigLoader.merge(config, override_config)
-      @config = RuboCop::Config.new(combined_config, "")
+      RuboCop::Config.new(combined_config, "")
     end
-
-    @config
   end
 
   def rubocop_options
@@ -73,25 +85,6 @@ class StyleGuide
       override_config
     else
       {}
-    end
-  end
-
-  # TODO: DELETE ME when we drop support for 0.x releases of rubocop
-  #
-  # This method exists in RuboCop::Config now (or config in this class) so we
-  # should make use of that.
-  def target_ruby_version
-    @target ||= begin
-      target = config['AllCops'] && config['AllCops']['TargetRubyVersion']
-
-      if !target || !RuboCop::Config::KNOWN_RUBIES.include?(target)
-        fail ValidationError, "Unknown Ruby version #{target.inspect} found " \
-          'in `TargetRubyVersion` parameter (in ' \
-          "#{loaded_path}).\nKnown versions: " \
-          "#{RuboCop::Config::KNOWN_RUBIES.join(', ')}"
-      end
-
-      target
     end
   end
 end

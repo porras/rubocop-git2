@@ -1,4 +1,4 @@
-require 'rubocop/git'
+require_relative '../git'
 require 'optparse'
 
 module RuboCop
@@ -44,6 +44,10 @@ module RuboCop
             @options.rubocop[:display_cop_names] = true
           end
 
+          opt.on('--only COP1,COP2', Array) do |args|
+            @options.rubocop[:only] = args
+          end
+
           opt.on('--cached', 'git diff --cached') do
             @options.cached = true
           end
@@ -54,6 +58,11 @@ module RuboCop
 
           opt.on('--hound', 'Hound compatibility mode') do
             @options.hound = true
+          end
+
+          opt.on('-f', '--format FORMAT',
+                 'Choose an output formatter') do |format|
+            @options.format = format
           end
 
           opt.on('--version', 'Display version') do
