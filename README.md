@@ -1,24 +1,14 @@
+**NOTE: this is a drop-in replacement for the unmaintained https://github.com/m4i/rubocop-git**
+
 # RuboCop::Git
 
 RuboCop for git diff.
 
-[![Gem Version](https://badge.fury.io/rb/rubocop-git.svg)](http://badge.fury.io/rb/rubocop-git)
-[![Build Status](https://travis-ci.org/m4i/rubocop-git.svg?branch=master)](https://travis-ci.org/m4i/rubocop-git)
-[![Code Climate](https://codeclimate.com/github/m4i/rubocop-git.png)](https://codeclimate.com/github/m4i/rubocop-git)
+[![Gem Version](https://badge.fury.io/rb/rubocop-git2.svg)](http://badge.fury.io/rb/rubocop-git2)
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'rubocop-git'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install rubocop-git
+Add or install `rubocop-git2`. NOT YET RELEASED - will happen soon!
 
 ## Usage
 
@@ -30,11 +20,3 @@ Or install it yourself as:
             --cached                     git diff --cached
             --staged                     synonym of --cached
             --hound                      Hound compatibility mode
-
-## Contributing
-
-1. Fork it ( https://github.com/m4i/rubocop-git/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
