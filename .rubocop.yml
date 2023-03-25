@@ -5,7 +5,7 @@ AllCops:
 Layout/DotPosition:
   Enabled: false
 Metrics/BlockLength:
-  Exclude: ['test/**/*.rb']
+  Exclude: ['spec/**/*.rb']
 Style/Documentation:
   Enabled: false
 Style/FrozenStringLiteralComment:

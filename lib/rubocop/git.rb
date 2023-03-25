@@ -1,7 +1,7 @@
-require_relative 'git/version'
 require 'rubocop'
 
 module RuboCop::Git
+  autoload :CLI,               "#{__dir__}/git/cli"
   autoload :Commit,            "#{__dir__}/git/commit"
   autoload :CommitFile,        "#{__dir__}/git/commit_file"
   autoload :DiffParser,        "#{__dir__}/git/diff_parser"
@@ -14,4 +14,5 @@ module RuboCop::Git
   autoload :Runner,            "#{__dir__}/git/runner"
   autoload :StyleChecker,      "#{__dir__}/git/style_checker"
   autoload :StyleGuide,        "#{__dir__}/git/style_guide"
+  autoload :VERSION,           "#{__dir__}/git/version"
 end
