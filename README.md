@@ -13,13 +13,36 @@ Add or install `rubocop-git2`.
 
 ## Usage
 
+### Examples
+
+```sh
+# check unstaged changes
+rubocop-git
+
+# check staged changes
+rubocop-git --staged
+
+# check the latest commit (or any other ref)
+rubocop-git HEAD
+
+# check the last five commits
+rubocop-git HEAD~4 HEAD
+
+# check all changes in a branch in github actions
+bundle exec rubocop-git origin/${{ github.base_ref }}
+```
+
+### Options
+
+Output of `rubocop-git --help`:
+
     Usage: rubocop-git [options] [[commit] commit]
         -c, --config FILE                Specify configuration file
-        -r, --require FILE               Require Ruby file
         -d, --debug                      Display debug info
-        -f, --format                     Set output format, see rubocop --help
         -D, --display-cop-names          Display cop names in offense messages
-            --only COP1,COP2             Run only specific cops or departments
-            --cached                     git diff --cached
-            --staged                     synonym of --cached
+        -f, --format FORMAT              Set output format (see rubocop --help)
             --hound                      Hound compatibility mode
+            --only COP1,COP2             Run only specific cops or departments
+        -r, --require FILE               Require Ruby file
+            --staged                     Inspect staged changes
+            --version                    Display version
