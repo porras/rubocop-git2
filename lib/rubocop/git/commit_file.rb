@@ -1,6 +1,5 @@
-module RuboCop::Git
 # c.f. https://github.com/thoughtbot/hound/blob/d2f3933/app/models/commit_file.rb
-class CommitFile
+class RuboCop::Git::CommitFile
   def initialize(file, commit)
     @file = file
     @commit = commit
@@ -15,11 +14,9 @@ class CommitFile
   end
 
   def content
-    @content ||= begin
-      unless removed?
-        @commit.file_content(filename)
-      end
-    end
+    @content ||= unless removed?
+                   @commit.file_content(filename)
+                 end
   end
 
   def relevant_line?(line_number)
@@ -41,7 +38,6 @@ class CommitFile
   private
 
   def patch
-    Patch.new(@file.patch)
+    RuboCop::Git::Patch.new(@file.patch)
   end
-end
 end

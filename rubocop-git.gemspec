@@ -5,14 +5,13 @@ Gem::Specification.new do |spec|
   spec.version       = RuboCop::Git::VERSION
   spec.authors       = ['Masaki Takeuchi', 'Janosch Müller']
   spec.email         = ['janosch84@gmail.com']
-  spec.summary       = %q{RuboCop for git diff.}
-  spec.description   = %q{RuboCop for git diff.}
+  spec.summary       = 'RuboCop for git diff.'
+  spec.description   = 'RuboCop for git diff.'
   spec.homepage      = 'https://github.com/jaynetics/rubocop-git2'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
   spec.required_ruby_version = '>= 2.6.0'

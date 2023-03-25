@@ -10,8 +10,8 @@ describe RuboCop::Git::Runner do
   it "enables cops passed via --only flag" do
     # WITHOUT only flag
     options = RuboCop::Git::Options.new
-    options.commits = ["v0.0.0"]
-    output = RSpec::Matchers::BuiltIn::CaptureStdout.capture -> do
+    options.commits = ["v0.0.0", "v0.0.4"]
+    output = capture_stdout do
       res = RuboCop::Git::Runner.new(exit_on_offence: false).run(options)
       expect(res).to eq false
     end
@@ -24,7 +24,7 @@ describe RuboCop::Git::Runner do
 
     # WITH only flag
     options.rubocop[:only] = ["Style/FrozenStringLiteralComment"]
-    output = RSpec::Matchers::BuiltIn::CaptureStdout.capture -> do
+    output = capture_stdout do
       res = RuboCop::Git::Runner.new(exit_on_offence: false).run(options)
       expect(res).to eq false
     end
@@ -38,5 +38,15 @@ describe RuboCop::Git::Runner do
 
   it "fails with no options" do
     expect { RuboCop::Git::Runner.new.run({}) }.to raise_error(/invalid/)
+  end
+
+  def capture_stdout(&block)
+    captured_stream = StringIO.new
+    original_stream = $stdout
+    $stdout = captured_stream
+    block.call
+    captured_stream.string
+  ensure
+    $stdout = original_stream
   end
 end
