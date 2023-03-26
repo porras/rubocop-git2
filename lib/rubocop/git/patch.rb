@@ -1,9 +1,8 @@
-module RuboCop::Git
 # copy from https://github.com/thoughtbot/hound/blob/5269fa5/app/models/patch.rb
-class Patch
-  RANGE_INFORMATION_LINE = /^@@ .+\+(?<line_number>\d+),/
-  MODIFIED_LINE = /^\+(?!\+|\+)/
-  NOT_REMOVED_LINE = /^[^-]/
+class RuboCop::Git::Patch
+  RANGE_INFORMATION_LINE = /^@@ .+\+(?<line_number>\d+),/.freeze
+  MODIFIED_LINE = /^\+(?!\+|\+)/.freeze
+  NOT_REMOVED_LINE = /^[^-]/.freeze
 
   def initialize(body)
     @body = body || ''
@@ -18,7 +17,7 @@ class Patch
       when RANGE_INFORMATION_LINE
         line_number = Regexp.last_match[:line_number].to_i
       when MODIFIED_LINE
-        line = Line.new(content, line_number, patch_position)
+        line = RuboCop::Git::Line.new(content, line_number, patch_position)
         hash[line_number] = line
         line_number += 1
       when NOT_REMOVED_LINE
@@ -32,5 +31,4 @@ class Patch
   def lines
     @body.each_line
   end
-end
 end

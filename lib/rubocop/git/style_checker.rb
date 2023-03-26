@@ -1,6 +1,5 @@
-module RuboCop::Git
-# ref. https://github.com/thoughtbot/hound/blob/d2f3933/app/models/style_checker.rb
-class StyleChecker
+class RuboCop::Git::StyleChecker
+  # ref. https://github.com/thoughtbot/hound/blob/d2f3933/app/models/style_checker.rb
   def initialize(modified_files,
                  rubocop_options,
                  config_file,
@@ -13,7 +12,10 @@ class StyleChecker
 
   def violations
     file_violations = @modified_files.map do |modified_file|
-      FileViolation.new(modified_file.absolute_path, offenses(modified_file))
+      RuboCop::Git::FileViolation.new(
+        modified_file.absolute_path,
+        offenses(modified_file)
+      )
     end
 
     file_violations.select do |file_violation|
@@ -35,9 +37,10 @@ class StyleChecker
   end
 
   def style_guide
-    @style_guide ||= StyleGuide.new(@rubocop_options,
-                                    @config_file,
-                                    @custom_config)
+    @style_guide ||= RuboCop::Git::StyleGuide.new(
+      @rubocop_options,
+      @config_file,
+      @custom_config
+    )
   end
-end
 end

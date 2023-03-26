@@ -1,10 +1,9 @@
-module RuboCop::Git
 # ref. https://github.com/thoughtbot/hound/blob/d2f3933/app/models/style_guide.rb
-class StyleGuide
-  def initialize(rubocop_options, config_file, override_config_content = nil)
+class RuboCop::Git::StyleGuide
+  def initialize(rubocop_options, config_file, custom_config = nil)
     @rubocop_options = rubocop_options
     @config_file = config_file
-    @override_config_content = override_config_content
+    @custom_config = custom_config
   end
 
   def violations(file)
@@ -77,8 +76,8 @@ class StyleGuide
   end
 
   def override_config
-    if @override_config_content
-      config_content = YAML.load(@override_config_content)
+    if @custom_config
+      config_content = RuboCop::Config.load_yaml_configuration(@custom_config)
       override_config = RuboCop::Config.new(config_content, "")
       override_config.add_missing_namespaces
       override_config.make_excludes_absolute
@@ -87,5 +86,4 @@ class StyleGuide
       {}
     end
   end
-end
 end
