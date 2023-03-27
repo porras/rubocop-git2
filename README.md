@@ -22,11 +22,16 @@ rubocop-git
 # check staged changes
 rubocop-git --staged
 
-# check the latest commit (or any other ref)
+# positional arguments are passed as git refs to git diff, e.g.:
+
+# check both staged and unstaged changes
 rubocop-git HEAD
 
-# check the last five commits
-rubocop-git HEAD~4 HEAD
+# check the previous commit
+rubocop-git HEAD~1 HEAD
+
+# check changes between two tags
+rubocop-git v1.0.0 v1.0.1
 
 # check all changes in a branch in github actions
 bundle exec rubocop-git origin/${{ github.base_ref }}
