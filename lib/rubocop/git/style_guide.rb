@@ -10,9 +10,9 @@ class RuboCop::Git::StyleGuide
     if ignored_file?(file)
       []
     else
-      parsed_source = parse_source(file)
+      src = process_source(file)
       team = RuboCop::Cop::Team.new(enabled_cops, config, rubocop_options)
-      team.inspect_file(parsed_source)
+      team.respond_to?(:investigate) ? team.investigate(src).offenses : team.inspect_file(src)
     end
   end
 
@@ -48,7 +48,7 @@ class RuboCop::Git::StyleGuide
     config.file_to_exclude?(file.absolute_path)
   end
 
-  def parse_source(file)
+  def process_source(file)
     source = RuboCop::ProcessedSource.new(
       file.content,
       config.target_ruby_version,
